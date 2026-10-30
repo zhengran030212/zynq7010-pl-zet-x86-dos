@@ -3,44 +3,80 @@
 // IO: PS accesses via GP0 -> 0x8000_xxxx IO window; uart console via PS UART
 `timescale 1ns/1ps
 module zet_soc_top (
-  // PS AXI-Lite (GP0) - PS writes to 286 IO space / control
+  (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 s_axi_aclk CLK" *)
+  (* X_INTERFACE_PARAMETER = "ASSOCIATED_BUSIF s_axi:m_axi, ASSOCIATED_RESET s_axi_aresetn" *)
   input  wire        s_axi_aclk,
+  (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 s_axi_aresetn RST" *)
   input  wire        s_axi_aresetn,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi AWADDR" *)
   input  wire [31:0] s_axi_awaddr,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi AWVALID" *)
   input  wire        s_axi_awvalid,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi AWREADY" *)
   output wire        s_axi_awready,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WDATA" *)
   input  wire [31:0] s_axi_wdata,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WSTRB" *)
   input  wire [3:0]  s_axi_wstrb,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WVALID" *)
   input  wire        s_axi_wvalid,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WREADY" *)
   output wire        s_axi_wready,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi BRESP" *)
   output wire [1:0]  s_axi_bresp,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi BVALID" *)
   output wire        s_axi_bvalid,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi BREADY" *)
   input  wire        s_axi_bready,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi ARADDR" *)
   input  wire [31:0] s_axi_araddr,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi ARVALID" *)
   input  wire        s_axi_arvalid,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi ARREADY" *)
   output wire        s_axi_arready,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *)
   output wire [31:0] s_axi_rdata,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RRESP" *)
   output wire [1:0]  s_axi_rresp,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RVALID" *)
   output wire        s_axi_rvalid,
-  // HP0 master to PS DDR
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RREADY" *)
+  input  wire        s_axi_rready,
+  // HP0 master
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi AWADDR" *)
   output wire [31:0] m_axi_awaddr,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi AWVALID" *)
   output wire        m_axi_awvalid,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi AWREADY" *)
   input  wire        m_axi_awready,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi WDATA" *)
   output wire [31:0] m_axi_wdata,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi WSTRB" *)
   output wire [3:0]  m_axi_wstrb,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi WVALID" *)
   output wire        m_axi_wvalid,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi WREADY" *)
   input  wire        m_axi_wready,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi BRESP" *)
   input  wire [1:0]  m_axi_bresp,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi BVALID" *)
   input  wire        m_axi_bvalid,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi BREADY" *)
   output wire        m_axi_bready,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi ARADDR" *)
   output wire [31:0] m_axi_araddr,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi ARVALID" *)
   output wire        m_axi_arvalid,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi ARREADY" *)
   input  wire        m_axi_arready,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi RDATA" *)
   input  wire [31:0] m_axi_rdata,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi RRESP" *)
   input  wire [1:0]  m_axi_rresp,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi RVALID" *)
   input  wire        m_axi_rvalid,
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_axi RREADY" *)
   output wire        m_axi_rready,
-  // console UART (to PS via EMIO)
   input  wire        uart_rxd,
   output wire        uart_txd,
   output wire        led
@@ -100,6 +136,6 @@ module zet_soc_top (
   assign uart_txd = 1'b1;   // uart not wired in minimal version
   // stub AXI-lite slave (PS control/status) - just ack reads with pc
   assign s_axi_awready=1'b1; assign s_axi_wready=1'b1;
-  assign s_axi_bresp=2'b0;   assign s_axi_bvalid=1'b0;
-  assign s_axi_arready=1'b1; assign s_axi_rdata={12'h0,z_pc}; assign s_axi_rresp=2'b0; assign s_axi_rvalid=1'b0;
+  assign s_axi_bresp=2'b0;   assign s_axi_bvalid=s_axi_awvalid & s_axi_bready;
+  assign s_axi_arready=1'b1; assign s_axi_rdata={12'h0,z_pc}; assign s_axi_rresp=2'b0; assign s_axi_rvalid=s_axi_arvalid & s_axi_rready;
 endmodule
