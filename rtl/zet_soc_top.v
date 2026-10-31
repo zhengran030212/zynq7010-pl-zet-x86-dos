@@ -1,5 +1,5 @@
 // Zet (x86-16) minimal SoC for Zynq-7010 PL
-// Memory: PS DDR @0x10000000 via HP0, BIOS in BRAM @0xFF000 (real mode high mem)
+// Memory: PS DDR @0x1C000000 via HP0 (safe high CMA window), BIOS in BRAM @0xFF000 (real mode high mem)
 // IO: PS accesses via GP0 -> 0x8000_xxxx IO window; uart console via PS UART
 `timescale 1ns/1ps
 module zet_soc_top (

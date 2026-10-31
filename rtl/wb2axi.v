@@ -38,8 +38,8 @@ module wb2axi (
   reg [15:0] rdata_r;
   reg io_r;
 
-  // map: byte addr = {wb_adr_i,1'b0} -> 20-bit; io space -> 0x8000_0000|port, mem -> 0x1000_0000|addr
-  wire [31:0] mem_addr = {12'h100, wb_adr_i, 1'b0};           // 0x10000000|byte_addr
+  // map: byte addr = {wb_adr_i,1'b0} -> 20-bit; io space -> 0x8000_0000|port, mem -> 0x1C00_0000|addr
+  wire [31:0] mem_addr = {12'h1C0, wb_adr_i, 1'b0};           // 0x1C000000|byte_addr (safe high CMA window)
   wire [31:0] io_addr  = {16'h8000, wb_adr_i, 2'b0};          // 0x8000_0000|port
 
   always @(posedge clk or negedge rst_n) begin
